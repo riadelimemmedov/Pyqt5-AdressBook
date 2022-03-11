@@ -48,7 +48,7 @@ class WindowMain(QtWidgets.QWidget):
     #!personShowView Function
     def personShowView(self):
         self.person = person.Person()
-        self.person.show()
+        self.person.show()#yeni Person penceresini ac
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

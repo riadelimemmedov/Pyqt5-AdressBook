@@ -46,7 +46,33 @@ class AddPerson(QtWidgets.QWidget):
         self.added_person_adress.setStyleSheet('border:2px solid gray;padding:2px;border-radius:1px')
         self.added_person_adress.move(145,240)
         
+        addPersonButton = QtWidgets.QPushButton('Add',self)
+        addPersonButton.setFont(buttonFont)
+        addPersonButton.move(308,440)
+        addPersonButton.clicked.connect(self.addPersonFunction)
+    
+    #!addPersonFunction
+    def addPersonFunction(self):
+        name = self.added_person_firstname.text()
+        surname = self.added_person_lastname.text()
+        age = self.added_person_age.currentText()
+        adres = self.added_person_adress.toPlainText()
         
+        
+        if(name and surname and age and adres != ''):
+            try:
+                cursor.execute('INSERT INTO persons(person_name,person_lastname,age_person,adress_person) VALUES(?,?,?,?)',(name,surname,age,adres))
+                connect.commit()
+                QtWidgets.QMessageBox.information(self,'Success','User Added Successfully')
+                self.added_person_firstname.setText('')
+                self.added_person_lastname.setText('')
+                self.added_person_age.setCurrentIndex(0)
+                self.added_person_adress.setText('')
+                
+            except:
+                QtWidgets.QMessageBox.information(self,'Warning','User Not Added')
+        else:
+            QtWidgets.QMessageBox.information(self,'Error','Input Data The Field ')
 def main():
     app = QtWidgets.QApplication(sys.argv)
     windowmain = AddPerson()

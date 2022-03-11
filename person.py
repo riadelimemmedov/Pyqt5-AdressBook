@@ -67,12 +67,15 @@ class Person(QtWidgets.QWidget):
     #!addPersonFunc function
     def addPersonFunc(self):
         self.add_person_data = addperson.AddPerson()
-        self.add_person_data.show()
+        self.add_person_data.show()#Yeni AddPerson penceresini ac
+        self.close()#Oldugumu penecereni bagla oldugum pencere ele self dir
         
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    personWindow = Person()
-    personWindow.show()
-    sys.exit(app.exec())
-if __name__ == '__main__':
-    main()
+        
+        
+# def main():
+#     app = QtWidgets.QApplication(sys.argv)
+#     personWindow = Person()
+#     personWindow.show()
+#     sys.exit(app.exec())
+# if __name__ == '__main__':
+#     main()
