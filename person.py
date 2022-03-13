@@ -63,6 +63,7 @@ class Person(QtWidgets.QWidget):
         delPersonButton.setStyleSheet('background-color:#c0392b;border:1px solid;border-radius:4px')
         delPersonButton.resize(150,28)
         delPersonButton.move(380,230)
+        delPersonButton.clicked.connect(self.deletePersonFunc)
         
     #!addPersonFunc function
     def addPersonFunc(self):
@@ -70,12 +71,15 @@ class Person(QtWidgets.QWidget):
         self.add_person_data.show()#Yeni AddPerson penceresini ac
         self.close()#Oldugumu penecereni bagla oldugum pencere ele self dir
         
+    def deletePersonFunc(self):
+        self.delete_person_data = self.personList.currentItem().text()
+        print('Deleted Person Data', self.delete_person_data)
         
         
-# def main():
-#     app = QtWidgets.QApplication(sys.argv)
-#     personWindow = Person()
-#     personWindow.show()
-#     sys.exit(app.exec())
-# if __name__ == '__main__':
-#     main()
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    personWindow = Person()
+    personWindow.show()
+    sys.exit(app.exec())
+if __name__ == '__main__':
+    main()

@@ -1,7 +1,7 @@
 #!Main File
 import sys
 from PyQt5 import QtWidgets
-import person
+import person,addperson
 from PyQt5.QtGui import QFont,QIcon
 
 
@@ -35,6 +35,7 @@ class WindowMain(QtWidgets.QWidget):
         addPersonButton.setIcon(QIcon('add.png'))
         addPersonButton.resize(140,30)
         addPersonButton.move(150,100)
+        addPersonButton.clicked.connect(self.addPersonFunc)
         ###################################################################
         
         #!About Button
@@ -49,6 +50,11 @@ class WindowMain(QtWidgets.QWidget):
     def personShowView(self):
         self.person = person.Person()
         self.person.show()#yeni Person penceresini ac
+        
+    #!addPersonFunc function
+    def addPersonFunc(self):
+        self.add_person_data = addperson.AddPerson()
+        self.add_person_data.show()#Yeni AddPerson penceresini ac
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
