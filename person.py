@@ -71,11 +71,28 @@ class Person(QtWidgets.QWidget):
         self.add_person_data.show()#Yeni AddPerson penceresini ac
         self.close()#Oldugumu penecereni bagla oldugum pencere ele self dir
         
+    #!deletePersonFunc function
     def deletePersonFunc(self):
         self.delete_person_data = self.personList.currentItem().text()
-        print('Deleted Person Data', self.delete_person_data)
-        
-        
+        DeletedPersonId = self.delete_person_data.split(')')[0]
+        allowDeleted = QtWidgets.QMessageBox.question(self,'Alert','Are you sure you want to delete the user?',QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,QtWidgets.QMessageBox.No)
+
+        if(allowDeleted == QtWidgets.QMessageBox.Yes):#yeni yes secdimse sil default onsuzda QtWidgets.QMessageBox.No vermisem 3 cu parametre olarag
+            #error handling with => try anc except in python
+            try:
+                cursor.execute(f'DELETE FROM persons WHERE person_id={DeletedPersonId}')
+                #ve ya
+                #cursor.execute('DELETE FROM persons WHERE person_id=?',(DeletedPersonId))
+                connect.commit()
+                QtWidgets.QMessageBox.information(self,'Info','Person Deleted')
+            except:
+                QtWidgets.QMessageBox.information(self,'Error','Person Not Deleted')
+                print('Hata Olustu')
+            
+            #after deleted person close window
+            #self = Person class
+            self.close()
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
     personWindow = Person()
