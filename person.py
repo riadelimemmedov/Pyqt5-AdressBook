@@ -56,6 +56,7 @@ class Person(QtWidgets.QWidget):
         updatePersonButton.setStyleSheet('background-color:#95afc0;border:1px solid;border-radius:4px')
         updatePersonButton.resize(150,28) 
         updatePersonButton.move(380,190)
+        updatePersonButton.clicked.connect(self.updatePerson)
 
         #?DeletePerson Button
         delPersonButton = QtWidgets.QPushButton('Delete Person',self)
@@ -92,6 +93,44 @@ class Person(QtWidgets.QWidget):
             #after deleted person close window
             #self = Person class
             self.close()
+    
+    #!updatePerson function
+    def updatePerson(self):
+        self.update_person_data = self.personList.currentItem().text()
+        global UpdatedPersonId #global seklinde yazilmasindaki sebeb basqa class icinde istifade olunacag bu deyisken ona gore
+        UpdatedPersonId = self.update_person_data.split(')')[0]
+        
+        #when clicked update person button show UpdatePerson class and close parent Class mean Person clas
+        self.update_class = UpdatePerson()
+        self.update_class.show()
+        self.close()#Person class
+        
+#?UpdatePerson 
+class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilmaz inheritance yerine bunu yaz
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Updated Person')
+        
+        try:
+            qs = connect.execute('SELECT * FROM persons WHERE person_id=?',(UpdatedPersonId))
+            resultdata = qs.fetchall()#fetchall return list, but fetchone return tuple
+            
+            person_id_database = resultdata[0][0]
+            person_name_database = resultdata[0][1]
+            person_lastname_database = resultdata[0][2]
+            person_age_database = resultdata[0][3]
+            person_adress_database = resultdata[0][4]
+            
+            print('User Id ', person_id_database)
+            print('User Name ', person_name_database)
+            print('User LastName ', person_lastname_database)
+            print('User Age ', person_age_database)
+            print('User Adress ', person_adress_database)
+            
+        except:
+            print('Error Update User')
+        
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
