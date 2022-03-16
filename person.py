@@ -110,6 +110,7 @@ class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilm
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Updated Person')
+        self.setGeometry(50,50,500,500)
         
         try:
             qs = connect.execute('SELECT * FROM persons WHERE person_id=?',(UpdatedPersonId))
@@ -121,15 +122,41 @@ class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilm
             person_age_database = resultdata[0][3]
             person_adress_database = resultdata[0][4]
             
-            print('User Id ', person_id_database)
-            print('User Name ', person_name_database)
-            print('User LastName ', person_lastname_database)
-            print('User Age ', person_age_database)
-            print('User Adress ', person_adress_database)
-            
         except:
             print('Error Update User')
+    
+        update_person_title = QtWidgets.QLabel('Person Update Info',self)
+        update_person_title.move(150,40)
+        update_person_title.setFont(textFont)
+
+        self.updated_person_name = QtWidgets.QLineEdit(self)
+        self.updated_person_name.move(150,85)
+        self.updated_person_name.setText(str(person_name_database))
         
+        self.updated_person_username = QtWidgets.QLineEdit(self)
+        self.updated_person_username.move(150,115)
+        self.updated_person_username.setText(str(person_lastname_database))
+        
+        self.updated_person_age = QtWidgets.QComboBox(self)
+        self.updated_person_age.move(150,150)
+        self.updated_person_age.resize(80,25)
+        for i in range(18,101):
+            self.updated_person_age.addItem(str(i))
+        self.updated_person_age.setCurrentText(str(person_age_database))
+        
+            
+        self.updated_person_adress = QtWidgets.QTextEdit(self)
+        self.updated_person_adress.move(150,185)
+        self.updated_person_adress.setText(str(person_adress_database))
+        
+        self.updated_person_button = QtWidgets.QPushButton('Update',self)
+        self.updated_person_button.setFont(buttonFont)
+        self.updated_person_button.move(315,382)
+        self.updated_person_button.clicked.connect(self.updatepersondatabase)
+    
+    #!updatepersondatabase function
+    def updatepersondatabase(self):
+        pass
 
 
 def main():
