@@ -116,11 +116,11 @@ class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilm
             qs = connect.execute('SELECT * FROM persons WHERE person_id=?',(UpdatedPersonId))
             resultdata = qs.fetchall()#fetchall return list, but fetchone return tuple
             
-            person_id_database = resultdata[0][0]
-            person_name_database = resultdata[0][1]
-            person_lastname_database = resultdata[0][2]
-            person_age_database = resultdata[0][3]
-            person_adress_database = resultdata[0][4]
+            self.person_id_database = resultdata[0][0]
+            self.person_name_database = resultdata[0][1]
+            self.person_lastname_database = resultdata[0][2]
+            self.person_age_database = resultdata[0][3]
+            self.person_adress_database = resultdata[0][4]
             
         except:
             print('Error Update User')
@@ -131,23 +131,23 @@ class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilm
 
         self.updated_person_name = QtWidgets.QLineEdit(self)
         self.updated_person_name.move(150,85)
-        self.updated_person_name.setText(str(person_name_database))
+        self.updated_person_name.setText(str(self.person_name_database))
         
         self.updated_person_username = QtWidgets.QLineEdit(self)
         self.updated_person_username.move(150,115)
-        self.updated_person_username.setText(str(person_lastname_database))
+        self.updated_person_username.setText(str(self.person_lastname_database))
         
         self.updated_person_age = QtWidgets.QComboBox(self)
         self.updated_person_age.move(150,150)
         self.updated_person_age.resize(80,25)
         for i in range(18,101):
             self.updated_person_age.addItem(str(i))
-        self.updated_person_age.setCurrentText(str(person_age_database))
+        self.updated_person_age.setCurrentText(str(self.person_age_database))
         
             
         self.updated_person_adress = QtWidgets.QTextEdit(self)
         self.updated_person_adress.move(150,185)
-        self.updated_person_adress.setText(str(person_adress_database))
+        self.updated_person_adress.setText(str(self.person_adress_database))
         
         self.updated_person_button = QtWidgets.QPushButton('Update',self)
         self.updated_person_button.setFont(buttonFont)
@@ -156,8 +156,28 @@ class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilm
     
     #!updatepersondatabase function
     def updatepersondatabase(self):
-        pass
+        p_id = self.person_id_database
+        p_name = self.updated_person_name.text()
+        p_username = self.updated_person_username.text()
+        p_age = self.updated_person_age.currentText()
+        p_adress = self.updated_person_adress.toPlainText()
+        
+        # print(p_id)
+        # print(p_name)
+        # print(p_username)
+        # print(p_age)
+        # print(p_adress)
+        
+        try:
+            cursor.execute('UPDATE persons SET person_name=?,person_lastname=?,age_person=?,adress_person=? WHERE person_id=?'
+                            ,(p_name,p_username,p_age,p_adress,p_id))
+            connect.commit()
+            QtWidgets.QMessageBox.information(self,'Info','Updated Person Successfully')
+            self.close()
+        except:
+            QtWidgets.QMessageBox.information(self,'Error','Person Not Updated')
 
+        
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
