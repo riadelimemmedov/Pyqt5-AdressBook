@@ -1,3 +1,4 @@
+#!AddPerson File
 import sys
 from PyQt5 import QtWidgets
 import sqlite3
@@ -73,10 +74,11 @@ class AddPerson(QtWidgets.QWidget):
                 QtWidgets.QMessageBox.information(self,'Warning','User Not Added')
         else:
             QtWidgets.QMessageBox.information(self,'Error','Input Data The Field ')
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    windowmain = AddPerson()
-    windowmain.show()
-    sys.exit(app.exec())
-if __name__ == '__main__':
-    main()
+            
+# def main():
+#     app = QtWidgets.QApplication(sys.argv)
+#     windowmain = AddPerson()
+#     windowmain.show()
+#     sys.exit(app.exec())
+# if __name__ == '__main__':
+#     main()

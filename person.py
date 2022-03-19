@@ -36,11 +36,12 @@ class Person(QtWidgets.QWidget):
         #!Button CRUD Button
         
         #?PersonList Button
-        personListButton = QtWidgets.QPushButton('Person List',self)
+        personListButton = QtWidgets.QPushButton('Get Person',self)
         personListButton.setFont(buttonFont)
         personListButton.setStyleSheet('background-color:#ecf0f1;border:1px solid;border-radius:4px')
         personListButton.resize(150,28)
         personListButton.move(380,110)
+        personListButton.clicked.connect(self.showPersonFunc)
         
         #?AddPerson Button
         addPersonButton = QtWidgets.QPushButton('Add Person',self)
@@ -104,7 +105,68 @@ class Person(QtWidgets.QWidget):
         self.update_class = UpdatePerson()
         self.update_class.show()
         self.close()#Person class
+    
+    #!showPersonFunc function
+    def showPersonFunc(self):
+        print('Clicked show person button')
+        self.update_person_data = self.personList.currentItem().text()
+        global UpdatedPersonId #global seklinde yazilmasindaki sebeb basqa class icinde istifade olunacag bu deyisken ona gore
+        UpdatedPersonId = self.update_person_data.split(')')[0]
         
+        #when clicked update person button show UpdatePerson class and close parent Class mean Person clas
+        self.show_person_class = ShowPersonDetail()
+        self.show_person_class.show()
+        self.close()#Person class
+        
+#!ShowPersonDetail
+class ShowPersonDetail(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilmaz inheritance yerine bunu yaz
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Show Person')
+        self.setGeometry(50,50,500,500)
+        
+        try:
+            qs = connect.execute('SELECT * FROM persons WHERE person_id=?',(UpdatedPersonId))
+            resultdata = qs.fetchall()#fetchall return list, but fetchone return tuple
+            
+            self.person_id_database = resultdata[0][0]
+            self.person_name_database = resultdata[0][1]
+            self.person_lastname_database = resultdata[0][2]
+            self.person_age_database = resultdata[0][3]
+            self.person_adress_database = resultdata[0][4]
+            
+        except:
+            print('Error Update User')
+    
+        update_person_title = QtWidgets.QLabel('Person Detail Info',self)
+        update_person_title.move(150,40)
+        update_person_title.setFont(textFont)
+
+        self.updated_person_name = QtWidgets.QLineEdit(self)
+        self.updated_person_name.move(150,85)
+        self.updated_person_name.setText(str(self.person_name_database))
+        self.updated_person_name.setReadOnly(True)
+        
+        self.updated_person_username = QtWidgets.QLineEdit(self)
+        self.updated_person_username.move(150,115)
+        self.updated_person_username.setText(str(self.person_lastname_database))
+        self.updated_person_username.setReadOnly(True)
+        
+        self.updated_person_age = QtWidgets.QComboBox(self)
+        self.updated_person_age.move(150,150)
+        self.updated_person_age.resize(80,25)
+        self.updated_person_age.setEnabled(False)#ve ya => setDisabled(True) seklinde olacag
+        for i in range(18,101):
+            self.updated_person_age.addItem(str(i))
+        self.updated_person_age.setCurrentText(str(self.person_age_database))
+        
+            
+        self.updated_person_adress = QtWidgets.QTextEdit(self)
+        self.updated_person_adress.move(150,185)
+        self.updated_person_adress.setText(str(self.person_adress_database))
+        self.updated_person_adress.setReadOnly(True)
+    
+    
 #?UpdatePerson 
 class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilmaz inheritance yerine bunu yaz
     def __init__(self):
@@ -179,10 +241,10 @@ class UpdatePerson(QtWidgets.QWidget):#QtWidgets.QWidget => olmasa pencere acilm
 
         
 
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    personWindow = Person()
-    personWindow.show()
-    sys.exit(app.exec())
-if __name__ == '__main__':
-    main()
+# def main():
+#     app = QtWidgets.QApplication(sys.argv)
+#     personWindow = Person()
+#     personWindow.show()
+#     sys.exit(app.exec())
+# if __name__ == '__main__':
+#     main()

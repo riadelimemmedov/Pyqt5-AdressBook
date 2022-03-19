@@ -1,7 +1,7 @@
 #!Main File
 import sys
 from PyQt5 import QtWidgets
-import person,addperson
+import person,addperson,aboutme
 from PyQt5.QtGui import QFont,QIcon
 
 
@@ -45,6 +45,7 @@ class WindowMain(QtWidgets.QWidget):
         aboutButton.setIcon(QIcon('about.png'))
         aboutButton.resize(140,30)
         aboutButton.move(150,150)
+        aboutButton.clicked.connect(self.aboutSiteFunc)
     
     #!personShowView Function
     def personShowView(self):
@@ -55,6 +56,11 @@ class WindowMain(QtWidgets.QWidget):
     def addPersonFunc(self):
         self.add_person_data = addperson.AddPerson()
         self.add_person_data.show()#Yeni AddPerson penceresini ac
+
+    def aboutSiteFunc(self):
+        self.about_me = aboutme.AboutMe()
+        self.about_me.show()
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
